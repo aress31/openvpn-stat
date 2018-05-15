@@ -43,7 +43,7 @@ def parse_args():
             "Connected Since"
         ],
         default="Connected Since",
-        dest="sort_by",
+        dest="sort",
         help="sort table by selected field",
         required=False
     )
@@ -60,7 +60,7 @@ def parse_args():
             "Last Ref"
         ],
         default="Last Ref",
-        dest="sort_by",
+        dest="sort",
         help="sort table by selected field",
         required=False
     )
@@ -120,7 +120,6 @@ def create_routing_table(routing):
 
 def main():
     args = parse_args()
-
     status = parse_status(args.input_log.read())
 
     if args.subcommand == "client":
@@ -128,22 +127,18 @@ def main():
     elif args.subcommand == "routing":
         table = create_routing_table(status.routing_table)
 
-    print(
-        "{} last update (UTC time): {}".format(
-            args.input_log.name, status.updated_at
-        )
-    )
+    print("{} last update: {}".format(args.input_log.name, status.updated_at))
 
     default_sorts = ['Connected Since', 'Last Ref']
 
-    if args.sort_by in default_sorts:
+    if args.sort in default_sorts:
         table = table.get_string(
-            sortby=args.sort_by,
+            sortby=args.sort,
             reversesort=True
         )
     else:
         table = table.get_string(
-            sortby=args.sort_by,
+            sortby=args.sort,
             reversesort=False
         )
 
