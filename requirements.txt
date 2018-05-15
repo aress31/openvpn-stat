@@ -1,2 +1,2 @@
-PTable
 openvpn_status
+PTable
