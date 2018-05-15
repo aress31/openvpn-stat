@@ -47,15 +47,6 @@ def parse_args():
         required=False
     )
 
-    client_parser.add_argument(
-        "-rs",
-        "--reverse-sort",
-        action="store_true",
-        dest="reverse_sort",
-        help="enable reverse sort",
-        required=False
-    )
-
     # client subparser
     routing_parser = subparsers.add_parser("routing")
 
@@ -71,15 +62,6 @@ def parse_args():
         default="Last Ref",
         dest="sort_by",
         help="sort table by selected field",
-        required=False
-    )
-
-    routing_parser.add_argument(
-        "-rs",
-        "--reverse-sort",
-        action="store_true",
-        dest="reverse_sort",
-        help="enable reverse sort",
         required=False
     )
 
@@ -146,11 +128,26 @@ def main():
     elif args.subcommand == "routing":
         table = create_routing_table(status.routing_table)
 
-    # sort the table
-    table = table.get_string(
-        sortby=args.sort_by,
-        reversesort=args.reverse_sort
+    print(
+        "{} last update (UTC time): {}".format(
+            args.input_log.name, status.updated_at
+        )
     )
+
+    # sort the table
+    default_sorts = ['Connected Since', 'Last Ref']
+
+    if args.sort_by in default_sorts:
+        table = table.get_string(
+            sortby=args.sort_by,
+            reversesort=True
+        )
+    else:
+        table = table.get_string(
+            sortby=args.sort_by,
+            reversesort=False
+        )
+
     print(table)
 
 
