@@ -16,6 +16,8 @@ def parse_args():
     parser.add_argument(
         "-iL",
         "-input--log",
+        # uncomment the "default" option and comment the "dest" option
+        # to enable monitoring of a given log file source (more user-firendly)
         # default="openvpn-status.log",
         dest="input_log",
         help="OpenVPN status log file",
@@ -28,7 +30,6 @@ def parse_args():
     )
     subparsers.required = True
 
-    # client subparser
     client_parser = subparsers.add_parser("client")
 
     client_parser.add_argument(
@@ -47,7 +48,6 @@ def parse_args():
         required=False
     )
 
-    # client subparser
     routing_parser = subparsers.add_parser("routing")
 
     routing_parser.add_argument(
@@ -134,7 +134,6 @@ def main():
         )
     )
 
-    # sort the table
     default_sorts = ['Connected Since', 'Last Ref']
 
     if args.sort_by in default_sorts:
